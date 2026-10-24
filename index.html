@@ -215,13 +215,16 @@
             document.querySelectorAll('.sns-btn').forEach(btn => btn.classList.remove('selected'));
             element.classList.add('selected');
             selectedSnsSource = source;
-        }
-
+        }        
+        
         function submitAndRedirect() {
             // アンケートデータの送信（非同期）
             sendDataToGoogleForm(selectedVisit, selectedSnsSource);
-            // 即座にAirレジへ遷移
-            window.location.href = AIRREGI_URL;
+            
+            // 0.4秒だけ遅らせて通信を完了させてからAirレジへ遷移
+            setTimeout(() => {
+                window.location.href = AIRREGI_URL;
+            }, 400);
         }
 
         function sendDataToGoogleForm(visitType, snsSource) {
