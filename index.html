@@ -6,20 +6,20 @@
     <title>メニューのご案内</title>
     <style>
         :root {
-            --bg-color: #FAFAF8;
-            --text-color: #2C2C2C;
-            --sub-text: #767676;
-            --accent-color: #1A1A1A;
-            --border-color: #E5E5E0;
+            --bg-color: #F7F6F2;       /* 少し温みのある上質な和紙・アイボリー調の背景 */
+            --text-color: #2A2A2A;     /* 柔らかな黒（墨色） */
+            --sub-text: #787572;       /* 落ち着いたグレー */
+            --accent-color: #1A1A1A;   
+            --border-color: #E2DFD8;   /* 繊細な境界線カラー */
             --card-bg: #FFFFFF;
-            --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
         }
 
         body {
@@ -29,38 +29,62 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 24px;
         }
 
         .container {
             width: 100%;
-            max-width: 420px;
+            max-width: 440px;
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 40px 24px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.03);
+            border-radius: 16px;
+            padding: 36px 28px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
             text-align: center;
         }
 
+        /* --- 上質なバナー画像スタイル --- */
+        .banner-wrapper {
+            margin: -8px -4px 24px -4px; /* カードのパディングと馴染ませる */
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            background: #FAFAFA;
+        }
+
+        .shop-banner {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: contain;
+            transition: transform 0.5s ease;
+        }
+
+        .shop-banner:hover {
+            transform: scale(1.01);
+        }
+
         h1 {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             font-weight: 500;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.08em;
             margin-bottom: 8px;
+            color: var(--text-color);
         }
 
         p.subtitle {
-            font-size: 0.875rem;
+            font-size: 0.85rem;
             color: var(--sub-text);
-            margin-bottom: 32px;
-            line-height: 1.5;
+            margin-bottom: 28px;
+            letter-spacing: 0.03em;
+            line-height: 1.6;
         }
 
         .step {
             display: none;
             opacity: 0;
-            transform: translateY(10px);
+            transform: translateY(8px);
             transition: var(--transition);
         }
 
@@ -77,17 +101,18 @@
             background-color: var(--card-bg);
             color: var(--text-color);
             border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 0.95rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
             font-weight: 500;
+            letter-spacing: 0.05em;
             cursor: pointer;
             transition: var(--transition);
             text-align: center;
         }
 
         .btn:hover {
-            border-color: var(--accent-color);
-            background-color: #Fcfcfc;
+            border-color: var(--text-color);
+            background-color: #FAF9F6;
         }
 
         .btn-primary {
@@ -98,7 +123,8 @@
         }
 
         .btn-primary:hover {
-            opacity: 0.9;
+            opacity: 0.85;
+            background-color: var(--accent-color);
         }
 
         .sns-grid {
@@ -113,7 +139,8 @@
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            font-size: 0.875rem;
+            font-size: 0.85rem;
+            letter-spacing: 0.02em;
             cursor: pointer;
             transition: var(--transition);
         }
@@ -131,36 +158,28 @@
         }
 
         @keyframes pulse {
-            0% { opacity: 0.6; }
+            0% { opacity: 0.5; }
             50% { opacity: 1; }
-            100% { opacity: 0.6; }
+            100% { opacity: 0.5; }
         }
-
-        /* 画像用のスタイルを追加 */
-        .shop-banner {
-            width: 100%;
-            max-height: 200px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border-color);
-        }
-
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- STEP 1: 来店回数の選択 -->
+        <!-- STEP 1: 来店回数の選択 ＋ 上質な画像エリア -->
         <div id="step-1" class="step active">
+            <div class="banner-wrapper">
+                <!-- 画像ファイル名が .jpg の場合に合わせて指定 -->
+                <img src="images/2026_osechi_reservation.jpg" alt="新春を彩る みやこの海鮮おせち" class="shop-banner">
+            </div>
+
             <h1>ご来店ありがとうございます</h1>
             <p class="subtitle">当店へのお越しは初めてですか？</p>
             <button class="btn" onclick="selectVisitType('初めて')">初めてのご来店</button>
             <button class="btn" onclick="selectVisitType('2回目以降')">2回目以降のご来店</button>
-            <!-- ★ここに画像を挿入 -->
-            <img src="images/2026_osechi_reservation.png" alt="おせちご予約のご案内" class="shop-banner">
         </div>
-
+        
         <!-- STEP 2-A: リピーター向け（自動遷移） -->
         <div id="step-returning" class="step">
             <h1>いつもありがとうございます</h1>
