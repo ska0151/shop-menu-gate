@@ -135,6 +135,17 @@
             50% { opacity: 1; }
             100% { opacity: 0.6; }
         }
+
+        /* 画像用のスタイルを追加 */
+        .shop-banner {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+        }
+
     </style>
 </head>
 <body>
@@ -146,6 +157,8 @@
             <p class="subtitle">当店へのお越しは初めてですか？</p>
             <button class="btn" onclick="selectVisitType('初めて')">初めてのご来店</button>
             <button class="btn" onclick="selectVisitType('2回目以降')">2回目以降のご来店</button>
+            <!-- ★ここに画像を挿入 -->
+            <img src="images/2026_osechi_reservation.png" alt="おせちご予約のご案内" class="shop-banner">
         </div>
 
         <!-- STEP 2-A: リピーター向け（自動遷移） -->
@@ -161,11 +174,13 @@
             
             <div class="sns-grid">
                 <button class="sns-btn" onclick="selectSns(this, 'Instagram')">Instagram</button>
+                <button class="sns-btn" onclick="selectSns(this, 'GoogleMaps')">Google Maps</button>
                 <button class="sns-btn" onclick="selectSns(this, 'X (Twitter)')">X (Twitter)</button>
                 <button class="sns-btn" onclick="selectSns(this, 'TikTok')">TikTok</button>
-                <button class="sns-btn" onclick="selectSns(this, 'Google検索')">Google検索</button>
+                <button class="sns-btn" onclick="selectSns(this, 'Facebook')">Facebook</button>
+                <button class="sns-btn" onclick="selectSns(this, 'グルメサイト')">食べログ等のグルメサイト</button>
                 <button class="sns-btn" onclick="selectSns(this, '知人の紹介')">知人の紹介</button>
-                <button class="sns-btn" onclick="selectSns(this, 'その他')">その他</button>
+                <button class="sns-btn" onclick="selectSns(this, 'その他')">その他（不明）</button>
             </div>
 
             <button class="btn btn-primary" onclick="submitAndRedirect()">メニューを見る</button>
@@ -224,7 +239,7 @@
             // x msだけ遅らせて通信を完了させてからAirレジへ遷移
             setTimeout(() => {
                 window.location.href = AIRREGI_URL;
-            }, 2000);
+            }, 400);
         }
 
         function sendDataToGoogleForm(visitType, snsSource) {
