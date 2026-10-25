@@ -174,7 +174,7 @@
 
     <script>
         // 設定: AirレジメニューのURL
-        const AIRREGI_URL = "[https://airregi.jp/menu/YOUR_SHOP_ID](https://airregi.jp/menu/YOUR_SHOP_ID)"; // ← 実際のAirレジURLに変更
+        const AIRREGI_URL = "https://kaisenmiyako.owst.jp/"; // ← 実際のAirレジURLに変更
 
         // 設定: Googleフォームの送信先エンドポイント（例）
         const GOOGLE_FORM_URL = "https://docs.google.com/forms/u/2/d/e/1FAIpQLSd51kN8BLaHSNSkxfYs8F3QB82buTU7k0Uo_31gHd7nBkdCag/formResponse";
@@ -221,10 +221,10 @@
             // アンケートデータの送信（非同期）
             sendDataToGoogleForm(selectedVisit, selectedSnsSource);
             
-            // 0.4秒だけ遅らせて通信を完了させてからAirレジへ遷移
+            // x msだけ遅らせて通信を完了させてからAirレジへ遷移
             setTimeout(() => {
                 window.location.href = AIRREGI_URL;
-            }, 400);
+            }, 2000);
         }
 
         function sendDataToGoogleForm(visitType, snsSource) {
