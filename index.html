@@ -43,7 +43,7 @@
             text-align: center;
         }
 
-        /* --- ウィンドウ幅に合わせる上質なバナー画像スタイル --- */
+        /* --- ウィンドウ幅に合わせる上質なバナー画像スタイル（下部配置用） --- */
         .banner-wrapper {
             width: 100%;
             border-radius: 10px;
@@ -51,7 +51,8 @@
             border: 1px solid rgba(0, 0, 0, 0.06);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
             background: #FAFAFA;
-            margin-bottom: 24px;
+            margin-top: 24px;   /* ボタンとの間に適度な余白 */
+            margin-bottom: 0;
         }
 
         .shop-banner {
@@ -168,16 +169,17 @@
 <body>
 
     <div class="container">
-        <!-- STEP 1: 来店回数の選択 ＋ レスポンシブ対応の上質な画像エリア -->
+        <!-- STEP 1: 来店回数の選択（質問とボタンが上部） -->
         <div id="step-1" class="step active">
-            <div class="banner-wrapper">
-                <img src="images/2026_osechi_reservation.png" alt="新春を彩る みやこの海鮮おせち" class="shop-banner">
-            </div>
-
             <h1>ご来店ありがとうございます</h1>
             <p class="subtitle">当店へのお越しは初めてですか？</p>
             <button class="btn" onclick="selectVisitType('初めて')">初めてのご来店</button>
             <button class="btn" onclick="selectVisitType('2回目以降')">2回目以降のご来店</button>
+
+            <!-- 画像を下部に配置 -->
+            <div class="banner-wrapper">
+                <img src="images/2026_osechi_reservation.png" alt="新春を彩る みやこの海鮮おせち" class="shop-banner">
+            </div>
         </div>
         
         <!-- STEP 2-A: リピーター向け（自動遷移） -->
