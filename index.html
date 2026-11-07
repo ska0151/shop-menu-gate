@@ -145,6 +145,12 @@
             transition: var(--transition);
         }
 
+        .sns-btn-other {
+            grid-column: 1 / -1;
+            padding: 18px 10px;
+            font-size: 0.95rem;
+        }
+
         .sns-btn.selected {
             background-color: var(--accent-color);
             color: #FFFFFF;
@@ -195,11 +201,10 @@
                 <button class="sns-btn" onclick="selectSns(this, 'Instagram')">Instagram</button>
                 <button class="sns-btn" onclick="selectSns(this, 'GoogleMaps')">Google Maps</button>
                 <button class="sns-btn" onclick="selectSns(this, 'X (Twitter)')">X (Twitter)</button>
-                <button class="sns-btn" onclick="selectSns(this, 'TikTok')">TikTok</button>
                 <button class="sns-btn" onclick="selectSns(this, 'Facebook')">Facebook</button>
                 <button class="sns-btn" onclick="selectSns(this, 'グルメサイト')">食べログ等のグルメサイト</button>
                 <button class="sns-btn" onclick="selectSns(this, '知人の紹介')">知人の紹介</button>
-                <button class="sns-btn" onclick="selectSns(this, 'その他')">その他（不明）</button>
+                <button class="sns-btn sns-btn-other" onclick="selectSns(this, 'その他')">その他（不明）</button>
             </div>
 
             <button class="btn btn-primary" onclick="submitAndRedirect()">メニューを見る</button>
@@ -244,12 +249,6 @@
             element.classList.add('selected');
             selectedSnsSource = source;
         }
-
-        function selectSns(element, source) {
-            document.querySelectorAll('.sns-btn').forEach(btn => btn.classList.remove('selected'));
-            element.classList.add('selected');
-            selectedSnsSource = source;
-        }        
         
         function submitAndRedirect() {
             // アンケートデータの送信（非同期）
