@@ -29,33 +29,37 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 24px;
+            padding: 16px;
         }
 
         .container {
             width: 100%;
             max-width: 440px;
+            min-width: 0;          /* スマホ画面でカードがはみ出るのを防ぐ */
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 16px;
-            padding: 36px 28px;
+            padding: 28px 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
             text-align: center;
         }
 
-        /* --- 上質なバナー画像スタイル --- */
+        /* --- ウィンドウ幅に合わせる上質なバナー画像スタイル（下部配置用） --- */
         .banner-wrapper {
-            margin: -8px -4px 24px -4px; /* カードのパディングと馴染ませる */
+            width: 100%;
+            max-width: 100%;       /* 安全のための最大幅制限 */
             border-radius: 10px;
             overflow: hidden;
             border: 1px solid rgba(0, 0, 0, 0.06);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
             background: #FAFAFA;
+            margin-top: 24px;   /* ボタンとの間に適度な余白 */
+            margin-bottom: 0;
         }
 
         .shop-banner {
-            width: 100%;
-            height: auto;
+            width: 100%;       /* ウィンドウ幅・カード幅いっぱいに自動拡大縮小 */
+            height: auto;      /* 縦横比を維持して崩れないようにする */
             display: block;
             object-fit: contain;
             transition: transform 0.5s ease;
@@ -66,7 +70,7 @@
         }
 
         h1 {
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             font-weight: 500;
             letter-spacing: 0.08em;
             margin-bottom: 8px;
@@ -76,7 +80,7 @@
         p.subtitle {
             font-size: 0.85rem;
             color: var(--sub-text);
-            margin-bottom: 28px;
+            margin-bottom: 24px;
             letter-spacing: 0.03em;
             line-height: 1.6;
         }
@@ -173,17 +177,17 @@
 <body>
 
     <div class="container">
-        <!-- STEP 1: 来店回数の選択 ＋ 上質な画像エリア -->
+        <!-- STEP 1: 来店回数の選択（質問とボタンが上部） -->
         <div id="step-1" class="step active">
-            <div class="banner-wrapper">
-                <!-- 画像ファイル名が .jpg の場合に合わせて指定 -->
-                <img src="images/2026_osechi_reservation.jpg" alt="新春を彩る みやこの海鮮おせち" class="shop-banner">
-            </div>
-
             <h1>ご来店ありがとうございます</h1>
             <p class="subtitle">当店へのお越しは初めてですか？</p>
             <button class="btn" onclick="selectVisitType('初めて')">初めてのご来店</button>
             <button class="btn" onclick="selectVisitType('2回目以降')">2回目以降のご来店</button>
+
+            <!-- 画像を下部に配置 -->
+            <div class="banner-wrapper">
+                <img src="images/2026_osechi_reservation.png" alt="新春を彩る みやこの海鮮おせち" class="shop-banner">
+            </div>
         </div>
         
         <!-- STEP 2-A: リピーター向け（自動遷移） -->
@@ -213,9 +217,9 @@
 
     <script>
         // 設定: AirレジメニューのURL
-        const AIRREGI_URL = "https://kaisenmiyako.owst.jp/"; // ← 実際のAirレジURLに変更
+        const AIRREGI_URL = "https://kaisenmiyako.owst.jp/"; 
 
-        // 設定: Googleフォームの送信先エンドポイント（例）
+        // 設定: Googleフォームの送信先エンドポイント
         const GOOGLE_FORM_URL = "https://docs.google.com/forms/u/2/d/e/1FAIpQLSd51kN8BLaHSNSkxfYs8F3QB82buTU7k0Uo_31gHd7nBkdCag/formResponse";
         const ENTRY_VISIT_TYPE = "entry.523120851"; // フォームの「来店回数」項目ID
         const ENTRY_SNS_SOURCE = "entry.1374582927"; // フォームの「流入元」項目ID
@@ -254,7 +258,7 @@
             // アンケートデータの送信（非同期）
             sendDataToGoogleForm(selectedVisit, selectedSnsSource);
             
-            // x msだけ遅らせて通信を完了させてからAirレジへ遷移
+            // 0.4秒だけ遅らせて通信を完了させてからAirレジへ遷移
             setTimeout(() => {
                 window.location.href = AIRREGI_URL;
             }, 400);
