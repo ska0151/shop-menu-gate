@@ -1,289 +1,253 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>メニューのご案内</title>
-    <style>
-        :root {
-            --bg-color: #F7F6F2;       /* 少し温みのある上質な和紙・アイボリー調の背景 */
-            --text-color: #2A2A2A;     /* 柔らかな黒（墨色） */
-            --sub-text: #787572;       /* 落ち着いたグレー */
-            --accent-color: #1A1A1A;   
-            --border-color: #E2DFD8;   /* 繊細な境界線カラー */
-            --card-bg: #FFFFFF;
-            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ご来店アンケート</title>
+  <style>
+    /* ==================================================
+       1. 保守用設定・変数定義
+       ================================================== */
+    :root {
+      --primary-color: #4a90e2;
+      --primary-hover: #357abd;
+      --accent-color: #50e3c2;
+      --text-color: #333333;
+      --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --card-bg: rgba(255, 255, 255, 0.95);
+      --border-radius: 16px;
+      --btn-radius: 12px;
+      --shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      --font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 16px;
-        }
+    body {
+      font-family: var(--font-family);
+      background: var(--bg-gradient);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
 
-        .container {
-            width: 100%;
-            max-width: 440px;
-            min-width: 0;          /* スマホ画面でカードがはみ出るのを防ぐ */
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 28px 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
-            text-align: center;
-        }
+    .container {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      padding: 40px 24px;
+      max-width: 440px;
+      width: 100%;
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
 
-        /* --- ウィンドウ幅に合わせる上質なバナー画像スタイル（下部配置用） --- */
-        .banner-wrapper {
-            width: 100%;
-            max-width: 100%;       /* 安全のための最大幅制限 */
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1px solid rgba(0, 0, 0, 0.06);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-            background: #FAFAFA;
-            margin-top: 24px;   /* ボタンとの間に適度な余白 */
-            margin-bottom: 0;
-        }
+    h1 {
+      font-size: 1.35rem;
+      margin-bottom: 12px;
+      color: #2c3e50;
+      line-height: 1.4;
+    }
 
-        .shop-banner {
-            width: 100%;       /* ウィンドウ幅・カード幅いっぱいに自動拡大縮小 */
-            height: auto;      /* 縦横比を維持して崩れないようにする */
-            display: block;
-            object-fit: contain;
-            transition: transform 0.5s ease;
-        }
+    p.subtitle {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 28px;
+    }
 
-        .shop-banner:hover {
-            transform: scale(1.01);
-        }
+    .view-step {
+      display: none;
+    }
 
-        h1 {
-            font-size: 1.15rem;
-            font-weight: 500;
-            letter-spacing: 0.08em;
-            margin-bottom: 8px;
-            color: var(--text-color);
-        }
+    .view-step.active {
+      display: block;
+    }
 
-        p.subtitle {
-            font-size: 0.85rem;
-            color: var(--sub-text);
-            margin-bottom: 24px;
-            letter-spacing: 0.03em;
-            line-height: 1.6;
-        }
+    .button-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
 
-        .step {
-            display: none;
-            opacity: 0;
-            transform: translateY(8px);
-            transition: var(--transition);
-        }
+    .button-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
 
-        .step.active {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
+    .btn {
+      background-color: var(--primary-color);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--btn-radius);
+      padding: 18px 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-        .btn {
-            width: 100%;
-            padding: 16px;
-            margin-bottom: 12px;
-            background-color: var(--card-bg);
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            letter-spacing: 0.05em;
-            cursor: pointer;
-            transition: var(--transition);
-            text-align: center;
-        }
+    .btn:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-2px);
+    }
 
-        .btn:hover {
-            border-color: var(--text-color);
-            background-color: #FAF9F6;
-        }
+    .btn-secondary {
+      background-color: #4158d0;
+      background-image: linear-gradient(43deg, #4158d0 0%, #c850c0 46%, #ffcc70 100%);
+    }
 
-        .btn-primary {
-            background-color: var(--accent-color);
-            color: #FFFFFF;
-            border-color: var(--accent-color);
-            margin-top: 16px;
-        }
+    .btn-full {
+      grid-column: span 2;
+    }
 
-        .btn-primary:hover {
-            opacity: 0.85;
-            background-color: var(--accent-color);
-        }
-
-        .sns-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 24px;
-        }
-
-        .sns-btn {
-            padding: 14px 10px;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 0.85rem;
-            letter-spacing: 0.02em;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .sns-btn-other {
-            grid-column: 1 / -1;
-            padding: 18px 10px;
-            font-size: 0.95rem;
-        }
-
-        .sns-btn.selected {
-            background-color: var(--accent-color);
-            color: #FFFFFF;
-            border-color: var(--accent-color);
-        }
-
-        .loading-text {
-            font-size: 0.9rem;
-            color: var(--sub-text);
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 0.5; }
-            50% { opacity: 1; }
-            100% { opacity: 0.5; }
-        }
-    </style>
+    .status-message {
+      margin-top: 20px;
+      font-size: 0.95rem;
+      color: #2e7d32;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- STEP 1: 来店回数の選択（質問とボタンが上部） -->
-        <div id="step-1" class="step active">
-            <h1>ご来店ありがとうございます</h1>
-            <p class="subtitle">当店へのお越しは初めてですか？</p>
-            <button class="btn" onclick="selectVisitType('初めて')">初めてのご来店</button>
-            <button class="btn" onclick="selectVisitType('2回目以降')">2回目以降のご来店</button>
-
-            <!-- 画像を下部に配置 -->
-            <div class="banner-wrapper">
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdL5mwIf8uQnnZyv_3Wt_VPET1seaewxusQtgGOo0nntr3k7w/viewform?usp=header" target="_blank" rel="noopener noreferrer">
-                    <img src="images/top.png" alt="新春を彩る みやこの海鮮おせち" class="shop-banner">
-                </a>
-            </div>
-        </div>
-        
-        <!-- STEP 2-A: リピーター向け（自動遷移） -->
-        <div id="step-returning" class="step">
-            <h1>いつもありがとうございます</h1>
-            <p class="subtitle loading-text">メニュー画面へご案内いたします...</p>
-        </div>
-
-        <!-- STEP 2-B: 初回向け（SNSアンケート） -->
-        <div id="step-first" class="step">
-            <h1>どちらでお知りになりましたか？</h1>
-            <p class="subtitle">よろしければ教えてください（任意）</p>
-            
-            <div class="sns-grid">
-                <button class="sns-btn" onclick="selectSns(this, 'Instagram')">Instagram</button>
-                <button class="sns-btn" onclick="selectSns(this, 'GoogleMaps')">Googleマップ</button>
-                <button class="sns-btn" onclick="selectSns(this, 'X (Twitter)')">X (Twitter)</button>
-                <button class="sns-btn" onclick="selectSns(this, 'Facebook')">Facebook</button>
-                <button class="sns-btn" onclick="selectSns(this, 'グルメサイト')">食べログ等のグルメサイト</button>
-                <button class="sns-btn" onclick="selectSns(this, '知人の紹介')">知人の紹介</button>
-                <button class="sns-btn sns-btn-other" onclick="selectSns(this, 'その他')">その他（不明、回答無し）</button>
-            </div>
-
-            <button class="btn btn-primary" onclick="submitAndRedirect()">メニューを見る</button>
-        </div>
+  <div class="container">
+    <!-- スキップ判定中の表示（一瞬だけ表示される場合があります） -->
+    <div id="step-loading" class="view-step active">
+      <h1>読み込み中...</h1>
+      <p class="subtitle">まもなくメニューページへ移動します</p>
     </div>
 
-    <script>
-        // 設定: AirレジメニューのURL
-        const AIRREGI_URL = "https://kaisenmiyako.owst.jp/"; 
+    <!-- STEP 1: 初回 vs 2回目以降の選択画面 -->
+    <div id="step-initial" class="view-step">
+      <h1>ご来店ありがとうございます</h1>
+      <p class="subtitle">当店のご利用は初めてですか？</p>
+      
+      <div class="button-stack" id="initial-options">
+        <button type="button" class="btn btn-secondary" data-action="first-time">初めてのご来店</button>
+        <button type="button" class="btn" data-action="repeat">2回目以降のご来店</button>
+      </div>
+    </div>
 
-        // 設定: Googleフォームの送信先エンドポイント
-        const GOOGLE_FORM_URL = "https://docs.google.com/forms/u/2/d/e/1FAIpQLSd51kN8BLaHSNSkxfYs8F3QB82buTU7k0Uo_31gHd7nBkdCag/formResponse";
-        const ENTRY_VISIT_TYPE = "entry.523120851"; // フォームの「来店回数」項目ID
-        const ENTRY_SNS_SOURCE = "entry.1374582927"; // フォームの「流入元」項目ID
+    <!-- STEP 2: 初めての方向け流入元アンケート画面 -->
+    <div id="step-first-visit" class="view-step">
+      <h1>当店をどこでお知りになりましたか？</h1>
+      <p class="subtitle">当てはまるものを1つお選びください</p>
 
-        let selectedVisit = "";
-        let selectedSnsSource = "";
+      <div class="button-grid" id="first-visit-options">
+        <button type="button" class="btn" data-source="Instagram">Instagram</button>
+        <button type="button" class="btn" data-source="Google Map">Google Map</button>
+        <button type="button" class="btn" data-source="知人の紹介">知人の紹介</button>
+        <button type="button" class="btn" data-source="看板・通りがかり">看板・通りがかり</button>
+        <button type="button" class="btn btn-full" data-source="その他">その他</button>
+      </div>
+    </div>
 
-        function switchStep(fromId, toId) {
-            document.getElementById(fromId).classList.remove('active');
-            setTimeout(() => {
-                document.getElementById(toId).classList.add('active');
-            }, 150);
+    <div id="status-message" class="status-message" style="display: none;">メニューページへ移動中...</div>
+  </div>
+
+  <script>
+    /* ==================================================
+       設定情報
+       ================================================== */
+    const CONFIG = {
+      ENDPOINT_URL: 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE',
+      TARGET_URL: 'https://example.com/menu',
+      // trueにすると、一度回答した端末は当日中アンケートをスキップして直接メニューへ飛ぶ
+      ENABLE_AUTO_SKIP: true,
+      STORAGE_KEY: 'shop_survey_completed_date'
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const stepLoading = document.getElementById('step-loading');
+      const stepInitial = document.getElementById('step-initial');
+      const stepFirstVisit = document.getElementById('step-first-visit');
+      const statusMessage = document.getElementById('status-message');
+
+      // 1. 自動スキップ判定
+      const todayStr = new Date().toDateString(); // 例: "Sun Nov 08 2026"
+      const lastCompletedDate = localStorage.getItem(CONFIG.STORAGE_KEY);
+
+      if (CONFIG.ENABLE_AUTO_SKIP && lastCompletedDate === todayStr) {
+        // すでに本日回答済みの場合は、即座にリダイレクト
+        redirectToMenu();
+        return;
+      }
+
+      // 未回答またはスキップ無効の場合は、ローディングを消して初期画面を表示
+      stepLoading.classList.remove('active');
+      stepInitial.classList.add('active');
+
+      // 2. トップ画面のボタンイベント
+      document.getElementById('initial-options').addEventListener('click', (e) => {
+        const button = e.target.closest('.btn');
+        if (!button) return;
+
+        const action = button.dataset.action;
+
+        if (action === 'first-time') {
+          stepInitial.classList.remove('active');
+          stepFirstVisit.classList.add('active');
+        } else if (action === 'repeat') {
+          handleSubmission('2回目以降');
+        }
+      });
+
+      // 3. 流入元アンケートのボタンイベント
+      document.getElementById('first-visit-options').addEventListener('click', (e) => {
+        const button = e.target.closest('.btn');
+        if (!button) return;
+
+        const source = button.dataset.source;
+        handleSubmission(source);
+      });
+
+      /**
+       * 選択データの送信およびメニューへのリダイレクト処理
+       */
+      function handleSubmission(responseValue) {
+        // 回答済みとしてローカルストレージに今日の日付を保存
+        if (CONFIG.ENABLE_AUTO_SKIP) {
+          localStorage.setItem(CONFIG.STORAGE_KEY, todayStr);
         }
 
-        function selectVisitType(type) {
-            selectedVisit = type;
-            if (type === '2回目以降') {
-                switchStep('step-1', 'step-returning');
-                sendDataToGoogleForm(type, "");
-                // 1.5秒後にAirレジへ遷移
-                setTimeout(() => {
-                    window.location.href = AIRREGI_URL;
-                }, 1500);
-            } else {
-                switchStep('step-1', 'step-first');
-            }
-        }
+        stepInitial.classList.remove('active');
+        stepFirstVisit.classList.remove('active');
+        statusMessage.style.display = 'block';
 
-        function selectSns(element, source) {
-            document.querySelectorAll('.sns-btn').forEach(btn => btn.classList.remove('selected'));
-            element.classList.add('selected');
-            selectedSnsSource = source;
+        if (CONFIG.ENDPOINT_URL && !CONFIG.ENDPOINT_URL.includes('YOUR_GOOGLE_APPS_SCRIPT_URL_HERE')) {
+          fetch(CONFIG.ENDPOINT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              answer: responseValue,
+              timestamp: new Date().toISOString()
+            })
+          }).finally(() => {
+            redirectToMenu();
+          });
+        } else {
+          setTimeout(redirectToMenu, 500);
         }
-        
-        function submitAndRedirect() {
-            // アンケートデータの送信（非同期）
-            sendDataToGoogleForm(selectedVisit, selectedSnsSource);
-            
-            // 0.4秒だけ遅らせて通信を完了させてからAirレジへ遷移
-            setTimeout(() => {
-                window.location.href = AIRREGI_URL;
-            }, 400);
-        }
+      }
 
-        function sendDataToGoogleForm(visitType, snsSource) {
-            if (!GOOGLE_FORM_URL.includes("docs.google.com")) return; // 未設定時はスキップ
-
-            const formData = new FormData();
-            formData.append(ENTRY_VISIT_TYPE, visitType);
-            if (snsSource) {
-                formData.append(ENTRY_SNS_SOURCE, snsSource);
-            }
-
-            // CORS制約を回避するため no-cors モードで送信
-            fetch(GOOGLE_FORM_URL, {
-                method: "POST",
-                mode: "no-cors",
-                body: formData
-            }).catch(error => {
-                console.log("Analytics transmission completed.");
-            });
-        }
-    </script>
+      function redirectToMenu() {
+        window.location.href = CONFIG.TARGET_URL;
+      }
+    });
+  </script>
 </body>
 </html>
