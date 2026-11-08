@@ -167,6 +167,14 @@
             animation: pulse 1.5s infinite;
         }
 
+        .config-error {
+            display: none;
+        }
+
+        .config-error.visible {
+            display: block;
+        }
+
         @keyframes pulse {
             0% { opacity: 0.5; }
             50% { opacity: 1; }
@@ -184,6 +192,11 @@
 <body>
 
     <div class="container">
+        <div id="config-error" class="config-error" role="alert">
+            <h1>メニューを表示できません</h1>
+            <p class="subtitle">席情報を確認できませんでした。スタッフにお声がけください。</p>
+        </div>
+
         <!-- STEP 1: 来店回数の選択（質問とボタンが上部） -->
         <div id="step-1" class="step active">
             <h1>ご来店ありがとうございます</h1>
@@ -225,10 +238,41 @@
     </div>
 
     <script>
-        // 設定: AirレジメニューのURL
-        // テスト用 const AIRREGI_URL = "https://kaisenmiyako.owst.jp/"; 
-        const AIRREGI_URL = "https://spo.order.airregi.jp/auth/seat?t=aaf7a64d-5272-4af8-b55d-45ade1ec7bed&qrSize=2&qrCodeType=1"; //8番カウンター本番url
+        // 席番号とAirレジURLの対応表。各URLはAirレジの席別QRコードから取得し、
+        // ダミー値を実URLに置き換えてください。QRコードはこのページのURLに ?seat=席番号 を付けます。
+        const AIRREGI_URLS = {
+            "1": "https://example.invalid/replace-with-seat-1-airregi-url",
+            "2": "https://example.invalid/replace-with-seat-2-airregi-url",
+            "3": "https://example.invalid/replace-with-seat-3-airregi-url",
+            "4": "https://example.invalid/replace-with-seat-4-airregi-url",
+            "5": "https://example.invalid/replace-with-seat-5-airregi-url",
+            "6": "https://example.invalid/replace-with-seat-6-airregi-url",
+            "7": "https://example.invalid/replace-with-seat-7-airregi-url",
+            "8": "https://spo.order.airregi.jp/auth/seat?t=aaf7a64d-5272-4af8-b55d-45ade1ec7bed&qrSize=2&qrCodeType=1",
+            "9": "https://example.invalid/replace-with-seat-9-airregi-url",
+            "10": "https://example.invalid/replace-with-seat-10-airregi-url"
+        };
+        const seatNumber = new URLSearchParams(window.location.search).get("seat");
+        const AIRREGI_URL = resolveAirregiUrl(seatNumber);
         const SURVEY_COMPLETED_KEY_PREFIX = "shopMenuGateSurveyCompleted";
+
+        function resolveAirregiUrl(seat) {
+            // 未指定・未登録の席番号やダミーURLでは遷移させない。
+            if (!seat || !Object.prototype.hasOwnProperty.call(AIRREGI_URLS, seat)) {
+                return null;
+            }
+
+            try {
+                const url = new URL(AIRREGI_URLS[seat]);
+                // 席別QRから取得したAirレジURLだけを遷移先として許可する。
+                return url.protocol === "https:" && url.hostname === "spo.order.airregi.jp"
+                    ? url.href
+                    : null;
+            } catch (error) {
+                console.error(`席番号「${seat}」のAirレジURLが不正です。`, error);
+                return null;
+            }
+        }
 
         // 設定: Googleフォームの送信先エンドポイント
         const GOOGLE_FORM_URL = "https://docs.google.com/forms/u/2/d/e/1FAIpQLSd51kN8BLaHSNSkxfYs8F3QB82buTU7k0Uo_31gHd7nBkdCag/formResponse";
@@ -321,17 +365,25 @@
             });
         }
 
-        try {
-            if (window.localStorage.getItem(getSurveyCompletedKey()) === "true") {
-                window.location.replace(AIRREGI_URL);
-            } else {
-                // 未回答または保存値がない場合は、アンケート画面を表示する。
+        // 席番号と遷移先を先に検証し、無効なQRでは回答状態にかかわらず案内画面を表示する。
+        if (!AIRREGI_URL) {
+            console.error(`席番号「${seatNumber || "未指定"}」に有効なAirレジURLが設定されていません。`);
+            document.querySelectorAll(".step").forEach(step => step.classList.remove("active"));
+            document.getElementById("config-error").classList.add("visible");
+            document.documentElement.classList.remove('survey-checking');
+        } else {
+            try {
+                if (window.localStorage.getItem(getSurveyCompletedKey()) === "true") {
+                    window.location.replace(AIRREGI_URL);
+                } else {
+                    // 未回答または保存値がない場合は、アンケート画面を表示する。
+                    document.documentElement.classList.remove('survey-checking');
+                }
+            } catch (error) {
+                // 状態を確認できない場合は回答済みとみなさず、アンケート画面を表示する。
+                console.error("アンケート回答状態を確認できませんでした。", error);
                 document.documentElement.classList.remove('survey-checking');
             }
-        } catch (error) {
-            // 状態を確認できない場合は回答済みとみなさず、アンケート画面を表示する。
-            console.error("アンケート回答状態を確認できませんでした。", error);
-            document.documentElement.classList.remove('survey-checking');
         }
     </script>
 </body>
