@@ -172,7 +172,14 @@
             50% { opacity: 1; }
             100% { opacity: 0.5; }
         }
+
+        .survey-checking body {
+            visibility: hidden;
+        }
     </style>
+    <script>
+        document.documentElement.classList.add('survey-checking');
+    </script>
 </head>
 <body>
 
@@ -219,7 +226,9 @@
 
     <script>
         // 設定: AirレジメニューのURL
-        const AIRREGI_URL = "https://kaisenmiyako.owst.jp/"; 
+        // テスト用 const AIRREGI_URL = "https://kaisenmiyako.owst.jp/"; 
+        const AIRREGI_URL = "https://spo.order.airregi.jp/auth/seat?t=aaf7a64d-5272-4af8-b55d-45ade1ec7bed&qrSize=2&qrCodeType=1"; //8番カウンター本番url
+        const SURVEY_COMPLETED_KEY = "shopMenuGateSurveyCompleted";
 
         // 設定: Googleフォームの送信先エンドポイント
         const GOOGLE_FORM_URL = "https://docs.google.com/forms/u/2/d/e/1FAIpQLSd51kN8BLaHSNSkxfYs8F3QB82buTU7k0Uo_31gHd7nBkdCag/formResponse";
@@ -257,6 +266,8 @@
         }
         
         function submitAndRedirect() {
+            markSurveyCompleted();
+
             // アンケートデータの送信（非同期）
             sendDataToGoogleForm(selectedVisit, selectedSnsSource);
             
@@ -264,6 +275,15 @@
             setTimeout(() => {
                 window.location.href = AIRREGI_URL;
             }, 400);
+        }
+
+        function markSurveyCompleted() {
+            try {
+                window.localStorage.setItem(SURVEY_COMPLETED_KEY, "true");
+            } catch (error) {
+                // 保存に失敗しても今回のメニュー遷移は続行するが、次回アクセス時に回答済みと判定できない。
+                console.error("アンケート回答状態を保存できませんでした。", error);
+            }
         }
 
         function sendDataToGoogleForm(visitType, snsSource) {
@@ -283,6 +303,19 @@
             }).catch(error => {
                 console.log("Analytics transmission completed.");
             });
+        }
+
+        try {
+            if (window.localStorage.getItem(SURVEY_COMPLETED_KEY) === "true") {
+                window.location.replace(AIRREGI_URL);
+            } else {
+                // 未回答または保存値がない場合は、アンケート画面を表示する。
+                document.documentElement.classList.remove('survey-checking');
+            }
+        } catch (error) {
+            // 状態を確認できない場合は回答済みとみなさず、アンケート画面を表示する。
+            console.error("アンケート回答状態を確認できませんでした。", error);
+            document.documentElement.classList.remove('survey-checking');
         }
     </script>
 </body>
